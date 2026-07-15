@@ -2,7 +2,7 @@
    CONFIGURATION
    ================================================================ */
 
-const CONFIG = {
+var CONFIG = {
     APP: {
         name: 'Helpdesk Monitor',
         version: '2.0.0',
@@ -14,7 +14,7 @@ const CONFIG = {
         colors: {
             Critical: '#f43f5e',
             High: '#fb923c',
-            Medium: '#f59e0b',
+            Medium: '#eab308',
             Low: '#10b981',
             Tier1: '#5b73ff',
             Tier2: '#8b5cf6',
@@ -39,6 +39,7 @@ const CONFIG = {
     API: {
         tickets: 'https://script.google.com/macros/s/AKfycbwOiyJoD3rFgzo78MQxj6cNod6vyB5lwAEx0HVjSKr3NNGAMBJ5pE1d31ECE0tYEJrExg/exec?action=tickets',
         tasks: 'https://script.google.com/macros/s/AKfycbwOiyJoD3rFgzo78MQxj6cNod6vyB5lwAEx0HVjSKr3NNGAMBJ5pE1d31ECE0tYEJrExg/exec?action=tasks',
+        responseTime: 'https://script.google.com/macros/s/AKfycbwOiyJoD3rFgzo78MQxj6cNod6vyB5lwAEx0HVjSKr3NNGAMBJ5pE1d31ECE0tYEJrExg/exec?action=responsetime',
     },
     AUTH: {
         username: 'admin',
@@ -52,7 +53,7 @@ const CONFIG = {
    LOCALIZATION
    ================================================================ */
 
-const LOCALE = {
+var LOCALE = {
     id: {
         appTitle: 'Helpdesk Monitor',
         appSubtitle: 'Januari 2026',
@@ -111,7 +112,9 @@ const LOCALE = {
         staffTitle: 'Tiket per Staff',
         staffSub: 'Jumlah tiket yang ditangani per staff',
         trendTitle: 'Tren Tiket 7 Hari',
-        trendSub: 'Volume harian — Issue vs Non-Issue',
+        trendSub: 'Volume harian — Issue vs Non-Issue (semua data)',
+        trend6MTitle: 'Tren Tiket 6 Bulan',
+        trend6MSub: 'Volume bulanan — Issue vs Non-Issue (semua data)',
         shiftTitle: 'Distribusi Shift',
         shiftSub: 'Pagi · Siang · Malam',
         trendContext: 'vs. periode sebelumnya dalam rentang yang dipilih',
@@ -125,6 +128,10 @@ const LOCALE = {
         taskStaffSub: 'Jumlah task yang dikerjakan',
         taskTableTitle: 'Daftar Task',
         taskTableSub: 'Seluruh task tim helpdesk',
+        topClientTitle: 'Top Client Issue',
+        topClientSub: 'Jumlah tiket berdasarkan client (tipe Issue)',
+        topClientNameHeader: 'Nama Klien',
+        topClientTotalHeader: 'Total Tiket',
         taskAllStaff: 'Semua Staff',
         taskAllStatus: 'Semua Status',
         taskSearchPlaceholder: 'Cari task / staff...',
@@ -158,7 +165,7 @@ const LOCALE = {
         mtmActiveEscTitle: 'Active Escalation Bulanan',
         mtmActiveEscSub: 'Jumlah eskalasi aktif per bulan',
         mtmARTTitle: 'ART Bulanan',
-        mtmARTSub: 'Rata-rata waktu merespon per bulan',
+        mtmARTSub: 'Rata-rata waktu merespon per bulan (menit)',
         mtmAHTTitle: 'AHT Bulanan',
         mtmAHTSub: 'Rata-rata waktu menangani per bulan (menit)',
         mtmSLATitle: 'SLA Rate Bulanan',
@@ -169,6 +176,8 @@ const LOCALE = {
         mtmProdSub: 'Perbandingan per produk per bulan',
         mtmStaffTitle: 'Tiket per Staff Bulanan',
         mtmStaffSub: 'Jumlah tiket per staff per bulan',
+        mtmTaskStaffTitle: 'Task per Staff Bulanan',
+        mtmTaskStaffSub: 'Jumlah task per staff per bulan',
         mtmFeatTitle: 'Fitur Bulanan · Issue vs Non-Issue',
         mtmFeatSub: 'Distribusi fitur per bulan',
         mtmShiftTitle: 'Distribusi Shift Bulanan',
@@ -259,7 +268,9 @@ const LOCALE = {
         staffTitle: 'Tickets per Staff',
         staffSub: 'Number of tickets handled per staff',
         trendTitle: '7-Day Ticket Trend',
-        trendSub: 'Daily volume — Issue vs Non-Issue',
+        trendSub: 'Daily volume — Issue vs Non-Issue (all data)',
+        trend6MTitle: '6-Month Ticket Trend',
+        trend6MSub: 'Monthly volume — Issue vs Non-Issue (all data)',
         shiftTitle: 'Shift Distribution',
         shiftSub: 'Morning · Day · Night',
         trendContext: 'vs. previous period in selected range',
@@ -273,6 +284,10 @@ const LOCALE = {
         taskStaffSub: 'Number of tasks handled',
         taskTableTitle: 'Task List',
         taskTableSub: 'All helpdesk team tasks',
+        topClientTitle: 'Top Client Issue',
+        topClientSub: 'Ticket count by client (Issue type)',
+        topClientNameHeader: 'Contact Client Name',
+        topClientTotalHeader: 'Total Ticket',
         taskAllStaff: 'All Staff',
         taskAllStatus: 'All Status',
         taskSearchPlaceholder: 'Search task / staff...',
@@ -306,7 +321,7 @@ const LOCALE = {
         mtmActiveEscTitle: 'Monthly Active Escalation',
         mtmActiveEscSub: 'Number of active escalations per month',
         mtmARTTitle: 'Monthly ART',
-        mtmARTSub: 'Average response time per month',
+        mtmARTSub: 'Average response time per month (minutes)',
         mtmAHTTitle: 'Monthly AHT',
         mtmAHTSub: 'Average handling time per month (minutes)',
         mtmSLATitle: 'Monthly SLA Rate',
@@ -317,6 +332,8 @@ const LOCALE = {
         mtmProdSub: 'Comparison by product per month',
         mtmStaffTitle: 'Monthly Tickets per Staff',
         mtmStaffSub: 'Number of tickets handled per staff per month',
+        mtmTaskStaffTitle: 'Monthly Tasks per Staff',
+        mtmTaskStaffSub: 'Number of tasks handled per staff per month',
         mtmFeatTitle: 'Monthly Feature · Issue vs Non-Issue',
         mtmFeatSub: 'Distribution by feature per month',
         mtmShiftTitle: 'Monthly Shift Distribution',
@@ -355,11 +372,13 @@ const LOCALE = {
    APPLICATION STATE
    ================================================================ */
 
-const appState = {
+var appState = {
     tickets: [],
     tasks: [],
+    responseTimes: [],
     filteredTickets: [],
     filteredTasks: [],
+    filteredResponseTimes: [],
     filters: {
         month: 'all',
         week: 'all',
@@ -384,12 +403,14 @@ const appState = {
         taskFilterStaff: 'all',
         taskFilterStatus: 'all',
         dateAutoFilled: false,
+        topClientPage: 1,
     },
     charts: {},
     meta: {
         dataSource: 'live',
         lastSync: null,
         isSyncing: false,
+        responseTimeStaffCols: [],
     },
 };
 
@@ -397,7 +418,7 @@ const appState = {
    UTILITY FUNCTIONS
    ================================================================ */
 
-const Utils = {
+var Utils = {
 
     Date: {
         parseDate: function(str) {
@@ -814,6 +835,39 @@ var DataLoader = {
         return out;
     },
 
+    getResponseTimeStaffCols: function(records) {
+        if (!records || !records.length) return [];
+        var fixedCols = ['Date', 'Day', 'Month', 'Week', 'Average'];
+        return Object.keys(records[0]).filter(function(k) { return fixedCols.indexOf(k) === -1; });
+    },
+
+    mapResponseTimeRows: function(records) {
+        var out = [];
+        if (!records || !records.length) return out;
+        var staffCols = DataLoader.getResponseTimeStaffCols(records);
+
+        records.forEach(function(rec) {
+            var rawDate = DataLoader.getField(rec, 'Date');
+            if (!rawDate) return;
+
+            var staffValues = {};
+            staffCols.forEach(function(name) {
+                var raw = rec[name];
+                staffValues[name] = (raw !== undefined && raw !== null && raw !== '') ? Utils.Duration.parse(raw) : null;
+            });
+
+            out.push({
+                date: Utils.Date.isoToDDMMYYYY(rawDate),
+                day: DataLoader.getField(rec, 'Day'),
+                month: DataLoader.getField(rec, 'Month'),
+                week: DataLoader.getField(rec, 'Week'),
+                average: (rec['Average'] !== undefined && rec['Average'] !== null && rec['Average'] !== '') ? Utils.Duration.parse(rec['Average']) : null,
+                staffValues: staffValues,
+            });
+        });
+        return out;
+    },
+
     normalizeYesNo: function(value) {
         var s = (value || '').trim().toLowerCase().replace(/\s+/g, '');
         if (['yes', 'y', 'onsla', 'true', '1', 'escalated'].indexOf(s) !== -1) return 'Yes';
@@ -831,14 +885,22 @@ var DataLoader = {
             return Promise.resolve(false);
         }
 
+        var rtPromise = DataLoader.fetchJSON(CONFIG.API.responseTime).catch(function(err) {
+            console.warn('Failed to load Response Time data:', err);
+            return [];
+        });
+
         return Promise.all([
             DataLoader.fetchJSON(CONFIG.API.tickets),
             DataLoader.fetchJSON(CONFIG.API.tasks),
+            rtPromise,
         ]).then(function(results) {
             var ticketRecords = results[0];
             var taskRecords = results[1];
+            var rtRecords = results[2];
             var mappedTickets = DataLoader.mapTicketRows(ticketRecords);
             var mappedTasks = DataLoader.mapTaskRows(taskRecords);
+            var mappedRT = DataLoader.mapResponseTimeRows(rtRecords);
 
             if (mappedTickets.length === 0 && mappedTasks.length === 0) {
                 throw new Error('Empty dataset from API');
@@ -846,6 +908,8 @@ var DataLoader = {
 
             appState.tickets = mappedTickets;
             appState.tasks = mappedTasks;
+            appState.responseTimes = mappedRT;
+            appState.meta.responseTimeStaffCols = DataLoader.getResponseTimeStaffCols(rtRecords);
             appState.meta.dataSource = 'live';
             appState.meta.lastSync = new Date();
             return true;
@@ -853,6 +917,7 @@ var DataLoader = {
             console.error('Failed to load data from API:', err);
             appState.tickets = [];
             appState.tasks = [];
+            appState.responseTimes = [];
             appState.meta.dataSource = 'error';
             appState.meta.lastSync = new Date();
             return false;
@@ -1077,6 +1142,24 @@ var DataProcessor = {
         return { labels: labels, issue: issue, nonIssue: nonIssue };
     },
 
+    prepare6MonthTrendData: function(data) {
+        var sortedMonths = Utils.Array.distinct(data.map(function(r) { return r.month; }))
+            .filter(Boolean)
+            .sort(function(a, b) {
+                var la = a.replace(/\[\d+\]\s*/, '').trim().toLowerCase();
+                var lb = b.replace(/\[\d+\]\s*/, '').trim().toLowerCase();
+                var na = UIRenderer._MONTH_ORDER[la] !== undefined ? UIRenderer._MONTH_ORDER[la] : 999;
+                var nb = UIRenderer._MONTH_ORDER[lb] !== undefined ? UIRenderer._MONTH_ORDER[lb] : 999;
+                if (na !== nb) return na - nb;
+                return la.localeCompare(lb);
+            });
+        var last6 = sortedMonths.slice(-6);
+        var labels = last6.map(function(m) { return m.replace(/\[\d+\]\s*/, '').trim(); });
+        var issue = last6.map(function(m) { return data.filter(function(r) { return r.month === m && r.type === 'Issue'; }).length; });
+        var nonIssue = last6.map(function(m) { return data.filter(function(r) { return r.month === m && r.type === 'Non Issue'; }).length; });
+        return { labels: labels, issue: issue, nonIssue: nonIssue };
+    },
+
     prepareShiftData: function(data) {
         var shifts = ['Pagi', 'Siang', 'Malam'];
         var labels = [t('morning'), t('day'), t('night')];
@@ -1086,11 +1169,40 @@ var DataProcessor = {
         return { labels: labels, issue: issue, nonIssue: nonIssue, totals: totals };
     },
 
+    prepareTopClientIssueData: function(data) {
+        var issues = data.filter(function(r) { return r.type === 'Issue' && r.client; });
+        var groups = {};
+        issues.forEach(function(r) {
+            var clientName = (r.client || '').trim();
+            if (!clientName) return;
+
+            var problemText = (r.problem || '').trim();
+            var problemPrefix = problemText.split(' - ')[0].trim();
+
+            var name = problemPrefix ? clientName + ' - ' + problemPrefix : clientName;
+
+            if (!groups[name]) {
+                groups[name] = { name: name, count: 0, problems: [] };
+            }
+            groups[name].count++;
+            groups[name].problems.push({
+                problem: r.problem,
+                date: r.date,
+                priority: r.priority,
+                product: r.product,
+                staff: r.staff,
+            });
+        });
+        var arr = Object.keys(groups).map(function(k) { return groups[k]; });
+        arr.sort(function(a, b) { return b.count - a.count; });
+        return arr;
+    },
+
     getStaffList: function(data) {
         return Utils.Array.distinct(data.map(function(r) { return r.staff; }).filter(Boolean)).sort();
     },
 
-    prepareMonthlyComparison: function(tickets, monthFrom, monthTo) {
+    prepareMonthlyComparison: function(tickets, monthFrom, monthTo, responseTimes, tasks) {
         if (!monthFrom || !monthTo) return null;
 
         var sorted = Utils.Array.distinct(tickets.map(function(r) { return r.month; }))
@@ -1117,14 +1229,22 @@ var DataProcessor = {
         if (selectedMonths.length === 0) return null;
 
         var inRange = tickets.filter(function(r) { return selectedMonths.indexOf(r.month) !== -1; });
+        var taskData = tasks || [];
 
+        var rtData = responseTimes || [];
         var buckets = selectedMonths.map(function(m) {
             var rows = tickets.filter(function(r) { return r.month === m; });
+            var taskRows = taskData.filter(function(tk) { return tk.month === m; });
+            var kpi = DataProcessor.calculateKPIs(rows);
+            var artResult = DataProcessor.calculateART(rtData.filter(function(r) { return r.month === m; }), 'all', appState.meta.responseTimeStaffCols);
+            kpi.artMinutes = artResult.avgMinutes;
+            kpi.artCount = artResult.count;
             return {
                 key: m,
                 label: m.replace(/\[\d+\]\s*/, '').trim(),
                 rows: rows,
-                kpi: DataProcessor.calculateKPIs(rows),
+                taskRows: taskRows,
+                kpi: kpi,
                 priority: DataProcessor.preparePriorityData(rows),
             };
         });
@@ -1175,6 +1295,21 @@ var DataProcessor = {
         return { labels: buckets.map(function(b) { return b.label; }), datasets: datasets };
     },
 
+    prepareMonthlyTaskStaffComparison: function(buckets) {
+        var unassignedLabel = t('unassigned');
+        var allRows = buckets.reduce(function(acc, b) { return acc.concat(b.taskRows || []); }, []);
+        var staffs = Utils.Array.distinct(allRows.map(function(tk) { return tk.staff || unassignedLabel; })).sort();
+        var palette = ['#5b73ff', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#fb923c', '#f43f5e'];
+        var datasets = staffs.map(function(s, i) {
+            return {
+                label: s.split(' ').slice(0, 2).join(' '),
+                data: buckets.map(function(b) { return (b.taskRows || []).filter(function(tk) { return (tk.staff || unassignedLabel) === s; }).length; }),
+                color: palette[i % palette.length],
+            };
+        });
+        return { labels: buckets.map(function(b) { return b.label; }), datasets: datasets };
+    },
+
     prepareMonthlyFeatureComparison: function(buckets) {
         var allRows = buckets.reduce(function(acc, b) { return acc.concat(b.rows); }, []);
         var features = Utils.Array.distinct(allRows.map(function(r) { return r.feature || 'Lainnya'; }));
@@ -1200,6 +1335,55 @@ var DataProcessor = {
             };
         });
         return { labels: buckets.map(function(b) { return b.label; }), datasets: datasets };
+    },
+
+    matchStaffColumn: function(staffCols, staffName) {
+        if (!staffName || !staffCols || !staffCols.length) return null;
+        var normalize = function(s) { return s.trim().toLowerCase().replace(/[^a-z0-9]/g, ''); };
+        var target = normalize(staffName);
+        var firstToken = staffName.trim().split(' ')[0].toLowerCase();
+
+        for (var i = 0; i < staffCols.length; i++) {
+            if (normalize(staffCols[i]) === target) return staffCols[i];
+        }
+        for (var j = 0; j < staffCols.length; j++) {
+            if (staffCols[j].toLowerCase() === firstToken) return staffCols[j];
+        }
+        return null;
+    },
+
+    calculateART: function(rows, staffFilter, staffCols) {
+        rows = rows || [];
+        var isStaffFiltered = !!(staffFilter && staffFilter !== 'all');
+        var matchedCol = isStaffFiltered ? DataProcessor.matchStaffColumn(staffCols, staffFilter) : null;
+
+        if (isStaffFiltered && !matchedCol) {
+            return { avgMinutes: 0, count: 0 };
+        }
+
+        var values = [];
+        rows.forEach(function(r) {
+            if (matchedCol) {
+                var v = r.staffValues ? r.staffValues[matchedCol] : null;
+                if (v !== null && v !== undefined && !isNaN(v)) values.push(v);
+                return;
+            }
+
+            var cols = staffCols || [];
+            var addedAny = false;
+            cols.forEach(function(col) {
+                var vv = r.staffValues ? r.staffValues[col] : null;
+                if (vv !== null && vv !== undefined && !isNaN(vv)) {
+                    values.push(vv);
+                    addedAny = true;
+                }
+            });
+
+            if (!addedAny && r.average !== null && r.average !== undefined && !isNaN(r.average)) {
+                values.push(r.average);
+            }
+        });
+        return { avgMinutes: values.length ? Utils.Math.average(values) : 0, count: values.length };
     },
 
     calculateAverageResponseTime: function(data) {
@@ -1350,6 +1534,82 @@ var FilterEngine = {
         var half = Math.ceil(allDates.length / 2);
         var prevSet = new Set(allDates.slice(0, half));
         return applyDim(data.filter(function(t) { return prevSet.has(t.start); }));
+    },
+
+    applyResponseTimeFilters: function(data, filters) {
+        var month = filters.month, week = filters.week, dateFrom = filters.dateFrom, dateTo = filters.dateTo;
+
+        return (data || []).filter(function(r) {
+            if (month !== 'all' && r.month !== month) return false;
+            if (week !== 'all' && r.week !== week) return false;
+
+            if (dateFrom || dateTo) {
+                var rd = Utils.Date.parseDate(r.date);
+                if (!rd) return false;
+                if (dateFrom) {
+                    var from = Utils.Date.parseDateInput(dateFrom);
+                    if (from && rd < from) return false;
+                }
+                if (dateTo) {
+                    var to = Utils.Date.parseDateInput(dateTo);
+                    if (to) {
+                        var toEnd = new Date(to);
+                        toEnd.setHours(23, 59, 59, 999);
+                        if (rd > toEnd) return false;
+                    }
+                }
+            }
+
+            return true;
+        });
+    },
+
+    getPreviousResponseTimeData: function(data, filters) {
+        var month = filters.month, week = filters.week, dateFrom = filters.dateFrom, dateTo = filters.dateTo;
+        data = data || [];
+
+        if (dateFrom || dateTo) {
+            var parseLocal = function(s) {
+                var parts = s.split('-').map(Number);
+                return new Date(parts[0], parts[1] - 1, parts[2]);
+            };
+            var from = dateFrom ? parseLocal(dateFrom) : null;
+            var to = dateTo ? parseLocal(dateTo) : null;
+            if (to) to.setHours(23, 59, 59, 999);
+
+            if (!from || !to) {
+                var dates = Utils.Array.distinct(data.map(function(r) { return r.date; }))
+                    .map(Utils.Date.parseDate).filter(Boolean).sort(function(a, b) { return a - b; });
+                if (dates.length === 0) return [];
+                if (!from) from = dates[0];
+                if (!to) { to = new Date(dates[dates.length - 1]);
+                    to.setHours(23, 59, 59, 999); }
+            }
+
+            var duration = to.getTime() - from.getTime() + 1;
+            var prevTo = new Date(from.getTime() - 1);
+            var prevFrom = new Date(from.getTime() - duration);
+
+            return data.filter(function(r) {
+                var rd = Utils.Date.parseDate(r.date);
+                return rd && rd >= prevFrom && rd <= prevTo;
+            });
+        }
+
+        if (week !== 'all') {
+            var weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+            var idx = weeks.indexOf(week);
+            var prevWeek = idx > 0 ? weeks[idx - 1] : null;
+            if (!prevWeek) return [];
+            return data.filter(function(r) { return r.week === prevWeek && (month === 'all' || r.month === month); });
+        }
+
+        var allDates = Utils.Array.distinct(data.map(function(r) { return r.date; }))
+            .sort(function(a, b) { return Utils.Date.parseDate(a) - Utils.Date.parseDate(b); });
+        if (allDates.length < 2) return [];
+        var half = Math.ceil(allDates.length / 2);
+        var prevSet = new Set(allDates.slice(0, half));
+        return data.filter(function(r) { return prevSet.has(r.date); });
     },
 
     getFilterSummary: function(filters) {
@@ -1537,7 +1797,7 @@ var ChartEngine = {
         }
     },
 
-    createLine: function(canvasId, labels, datasets) {
+    createLine: function(canvasId, labels, datasets, tooltipFormatter) {
         this.destroy(canvasId);
         var ctx = document.getElementById(canvasId);
         if (!ctx) return null;
@@ -1555,8 +1815,28 @@ var ChartEngine = {
                     pointHoverRadius: 8,
                     pointBackgroundColor: ds.color,
                     borderWidth: 2,
+                    formatter: typeof tooltipFormatter === 'function' ? tooltipFormatter : null,
                 };
             });
+
+            var tooltipCallbacks = {
+                footer: function(items) {
+                    var total = items.reduce(function(a, i) { return a + i.parsed.y; }, 0);
+                    return 'Total: ' + total;
+                },
+            };
+
+            if (typeof tooltipFormatter === 'function') {
+                tooltipCallbacks.label = function(item) {
+                    var val = item.parsed.y;
+                    if (val === null || val === undefined) return item.dataset.label + ': -';
+                    return item.dataset.label + ': ' + tooltipFormatter(val);
+                };
+                tooltipCallbacks.footer = function(items) {
+                    var total = items.reduce(function(a, i) { return a + (i.parsed.y || 0); }, 0);
+                    return 'Total: ' + tooltipFormatter(total);
+                };
+            }
 
             var chart = new Chart(ctx, {
                 type: 'line',
@@ -1570,12 +1850,7 @@ var ChartEngine = {
                             labels: { color: getTickColor(), boxWidth: 10, font: { size: 11, family: 'Inter' }, padding: 14 },
                         },
                         tooltip: {
-                            callbacks: {
-                                footer: function(items) {
-                                    var total = items.reduce(function(a, i) { return a + i.parsed.y; }, 0);
-                                    return 'Total: ' + total;
-                                },
-                            },
+                            callbacks: tooltipCallbacks,
                         },
                     },
                     scales: {
@@ -1780,12 +2055,13 @@ var ChartEngine = {
                     meta.data.forEach(function(pt, i) {
                         var val = ds.data[i];
                         if (val == null) return;
+                        var text = ds.formatter ? ds.formatter(val) : val;
                         ctx.save();
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'bottom';
                         ctx.fillStyle = ds.borderColor;
                         ctx.font = 'bold 10px Inter';
-                        ctx.fillText(val, pt.x, pt.y - 6);
+                        ctx.fillText(text, pt.x, pt.y - 6);
                         ctx.restore();
                     });
                 });
@@ -1814,7 +2090,7 @@ var ChartEngine = {
 
 var UIRenderer = {
 
-    renderKPI: function(data, prevData, filterSummary, gridId, badgeId) {
+    renderKPI: function(data, prevData, filterSummary, gridId, badgeId, artInfo) {
         gridId = gridId || 'kpiGrid';
         badgeId = badgeId || 'kpiBadge';
         var grid = document.getElementById(gridId);
@@ -1872,10 +2148,11 @@ var UIRenderer = {
             },
             {
                 id: 'avgResponseTime',
-                value: '-',
+                value: (artInfo && artInfo.cur && artInfo.cur.count > 0) ? Utils.Duration.formatAHT(artInfo.cur.avgMinutes) : '-',
                 color: '#06b6d4',
                 sub: t('subART'),
-                delta: null,
+                delta: (artInfo && artInfo.cur && artInfo.cur.count > 0 && artInfo.prev && artInfo.prev.count > 0) ? UIRenderer._deltaAHT(artInfo.cur.avgMinutes, artInfo.prev.avgMinutes) : null,
+                large: true,
             },
             {
                 id: 'sla',
@@ -1891,7 +2168,8 @@ var UIRenderer = {
 
         grid.innerHTML = kpis.map(function(k) {
             var deltaHtml = k.delta ? '<div style="margin-top:6px;display:flex;align-items:center;gap:6px">' + k.delta + '<span class="kpi-compare">' + prevLabel + '</span></div>' : '';
-            return '<div class="kpi-card" style="--kpi-color:' + k.color + '">' +
+            var cardClass = 'kpi-card' + (k.large ? ' kpi-card-lg' : '');
+            return '<div class="' + cardClass + '" style="--kpi-color:' + k.color + '">' +
                 '<div class="kpi-bar"></div>' +
                 '<div class="kpi-label">' + t(k.id) + '</div>' +
                 '<div class="kpi-value">' + k.value + '</div>' +
@@ -2018,9 +2296,9 @@ var UIRenderer = {
         UIRenderer._renderPriorityChart(data);
         UIRenderer._renderTierChart(data);
         UIRenderer._renderProductChart(data);
-        UIRenderer._renderFeatureChart(data);
         UIRenderer._renderStaffChart(data);
         UIRenderer._renderTrendChart(data);
+        UIRenderer._render6MonthTrendChart();
         UIRenderer._renderShiftChart(data);
     },
 
@@ -2115,8 +2393,8 @@ var UIRenderer = {
         ChartEngine.createSingleBar(canvasId, chartData.labels, chartData.values);
     },
 
-    _renderTrendChart: function(data) {
-        var chartData = DataProcessor.prepareTrendData(data);
+    _renderTrendChart: function() {
+        var chartData = DataProcessor.prepareTrendData(appState.tickets);
         if (chartData.labels.length === 0) return;
 
         var labels = chartData.labels.map(function(label) {
@@ -2151,6 +2429,20 @@ var UIRenderer = {
             comp.innerHTML = cmp(chartData.issue, t('issue')) + cmp(chartData.nonIssue, t('nonIssue')) +
                 '<span class="trend-context">' + t('trendContext') + '</span>';
         }
+    },
+
+    _render6MonthTrendChart: function() {
+        var chartData = DataProcessor.prepare6MonthTrendData(appState.tickets);
+        if (chartData.labels.length === 0) return;
+
+        ChartEngine.createLine(
+            'chartTrend6M',
+            chartData.labels,
+            [
+                { label: t('nonIssue'), data: chartData.nonIssue, color: CONFIG.CHART.colors.non },
+                { label: t('issue'), data: chartData.issue, color: CONFIG.CHART.colors.issue },
+            ]
+        );
     },
 
     _renderShiftChart: function(data, canvasId, legendId, subtitleId) {
@@ -2277,6 +2569,110 @@ var UIRenderer = {
             labels: combined.map(function(x) { return x.label.split(' ').slice(0, 2).join(' '); }),
             values: combined.map(function(x) { return x.count; }),
         };
+    },
+
+    _renderTopClientTable: function(tickets) {
+        var list = DataProcessor.prepareTopClientIssueData(tickets || []);
+        UIRenderer._renderTopClientTablePage(list);
+    },
+
+    _renderTopClientTablePage: function(list) {
+        var pageSize = CONFIG.PAGINATION.pageSize;
+        var totalPages = Utils.Array.totalPages(list, pageSize);
+        var page = Math.min(appState.ui.topClientPage || 1, totalPages);
+        appState.ui.topClientPage = page;
+        var pageItems = Utils.Array.paginate(list, page, pageSize);
+
+        var tbody = document.getElementById('topClientTableBody');
+        if (!tbody) return;
+
+        if (pageItems.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3"><div class="task-empty">' + t('noData') + '</div></td></tr>';
+            UIRenderer._renderTopClientPagination(list, 0, 0);
+            return;
+        }
+
+        var startIdx = (page - 1) * pageSize;
+        tbody.innerHTML = pageItems.map(function(item, i) {
+            return '<tr>' +
+                '<td class="tc-col-num">' + (startIdx + i + 1) + '</td>' +
+                '<td class="tc-col-name">' + Utils.String.escapeHtml(item.name) + '</td>' +
+                '<td class="tc-col-total">' + item.count + '</td>' +
+                '</tr>';
+        }).join('');
+
+        Array.prototype.forEach.call(tbody.querySelectorAll('tr'), function(row, i) {
+            row.addEventListener('click', function() {
+                UIRenderer._showTopClientModal(pageItems[i]);
+            });
+        });
+
+        UIRenderer._renderTopClientPagination(list, list.length, totalPages);
+    },
+
+    _renderTopClientPagination: function(list, totalItems, totalPages) {
+        var el = document.getElementById('topClientPagination');
+        if (!el) return;
+
+        var pageSize = CONFIG.PAGINATION.pageSize;
+        var page = Math.min(appState.ui.topClientPage || 1, totalPages || 1);
+        var startIdx = totalItems > 0 ? (page - 1) * pageSize + 1 : 0;
+        var endIdx = Math.min(page * pageSize, totalItems);
+
+        var infoText = totalItems > 0 ? (startIdx + ' - ' + endIdx + ' / ' + totalItems) : t('noData');
+
+        if (totalPages <= 1) {
+            el.innerHTML = '<div class="pagination-info">' + infoText + '</div>';
+            return;
+        }
+
+        el.innerHTML = '<div class="pagination-info">' + infoText + '</div>' +
+            '<div class="pagination-buttons">' +
+            '<button class="pagination-btn" data-page="prev" ' + (page <= 1 ? 'disabled' : '') + '>&lsaquo;</button>' +
+            '<button class="pagination-btn" data-page="next" ' + (page >= totalPages ? 'disabled' : '') + '>&rsaquo;</button>' +
+            '</div>';
+
+        el.querySelectorAll('.pagination-btn[data-page]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var target = btn.dataset.page;
+                var newPage = target === 'prev' ? page - 1 : page + 1;
+                if (newPage >= 1 && newPage <= totalPages) {
+                    appState.ui.topClientPage = newPage;
+                    UIRenderer._renderTopClientTablePage(list);
+                }
+            });
+        });
+    },
+
+    _showTopClientModal: function(item) {
+        var overlay = document.getElementById('topClientModalOverlay');
+        var title = document.getElementById('topClientModalTitle');
+        var body = document.getElementById('topClientModalBody');
+        if (!overlay || !title || !body || !item) return;
+
+        title.textContent = item.name;
+
+        if (!item.problems || item.problems.length === 0) {
+            body.innerHTML = '<div class="task-empty">' + t('noData') + '</div>';
+        } else {
+            body.innerHTML = item.problems.map(function(p) {
+                var priColor = CONFIG.CHART.colors[p.priority] || CONFIG.CHART.colors.Low;
+                return '<div class="modal-problem-item">' +
+                    '<div class="modal-problem-top">' +
+                    '<span class="esc-pri-badge" style="background:' + Utils.Color.toRGBA(priColor, 0.2) + ';color:' + priColor + '">' + Utils.String.escapeHtml(p.priority || '-') + '</span>' +
+                    '<span class="modal-problem-date">' + Utils.String.escapeHtml(p.date || '-') + '</span>' +
+                    '</div>' +
+                    '<div class="modal-problem-text">' + Utils.String.escapeHtml(p.problem || '-') + '</div>' +
+                    '</div>';
+            }).join('');
+        }
+
+        overlay.classList.add('is-open');
+    },
+
+    _hideTopClientModal: function() {
+        var overlay = document.getElementById('topClientModalOverlay');
+        if (overlay) overlay.classList.remove('is-open');
     },
 
     _populateTaskFilters: function(data) {
@@ -2415,13 +2811,20 @@ var UIRenderer = {
         });
     },
 
+    scrollToTop: function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    },
+
     renderMTM: function() {
         var filters = appState.mtmFilters;
         var badge = document.getElementById('mtmBadge');
         var emptyState = document.getElementById('mtmEmptyState');
         var content = document.getElementById('mtmContent');
 
-        var data = DataProcessor.prepareMonthlyComparison(appState.tickets, filters.monthFrom, filters.monthTo);
+        var data = DataProcessor.prepareMonthlyComparison(appState.tickets, filters.monthFrom, filters.monthTo, appState.responseTimes, appState.tasks);
 
         if (!data || data.buckets.length === 0) {
             if (emptyState) emptyState.style.display = 'block';
@@ -2436,10 +2839,9 @@ var UIRenderer = {
             ChartEngine.destroy('chartMTMAHT');
             ChartEngine.destroy('chartMTMSLA');
             ChartEngine.destroy('chartMTMPriority');
-            ChartEngine.destroy('chartMTMTierCompare');
             ChartEngine.destroy('chartMTMProductCompare');
             ChartEngine.destroy('chartMTMStaffCompare');
-            ChartEngine.destroy('chartMTMFeatureCompare');
+            ChartEngine.destroy('chartMTMTaskStaffCompare');
             ChartEngine.destroy('chartMTMShiftCompare');
             return;
         }
@@ -2463,7 +2865,7 @@ var UIRenderer = {
             { id: 'nonIssue', get: function(k) { return k.nonIssue; }, fmt: function(v) { return String(v); }, invert: false },
             { id: 'activeEsc', get: function(k) { return k.activeEsc; }, fmt: function(v) { return String(v); }, invert: true },
             { id: 'aht', get: function(k) { return k.aht; }, fmt: function(v) { return Utils.Duration.formatAHT(v); }, invert: true },
-            { id: 'avgResponseTime', get: function(k) { return null; }, fmt: function(v) { return '-'; }, invert: false, empty: true },
+            { id: 'avgResponseTime', get: function(k) { return k.artCount > 0 ? k.artMinutes : null; }, fmt: function(v) { return v === null ? '-' : Utils.Duration.formatAHT(v); }, invert: true },
             { id: 'sla', get: function(k) { return k.slaRate; }, fmt: function(v) { return v.toFixed(1) + '%'; }, invert: false },
         ];
 
@@ -2481,7 +2883,9 @@ var UIRenderer = {
                 var deltaHtml = '';
                 if (i > 0) {
                     var prevVal = m.get(buckets[i - 1].kpi);
-                    deltaHtml = UIRenderer._deltaTag(val, prevVal, m.invert);
+                    if (val !== null && prevVal !== null) {
+                        deltaHtml = UIRenderer._deltaTag(val, prevVal, m.invert);
+                    }
                 }
                 return '<td><div class="mtm-cell-value">' + display + '</div>' + (deltaHtml ? '<div class="mtm-cell-delta">' + deltaHtml + '</div>' : '') + '</td>';
             }).join('');
@@ -2527,10 +2931,10 @@ var UIRenderer = {
             { label: t('activeEsc'), data: activeEscValues, color: '#fb923c' },
         ]);
 
-        var artValues = buckets.map(function() { return null; });
+        var artValues = buckets.map(function(b) { return b.kpi.artCount > 0 ? b.kpi.artMinutes : null; });
         ChartEngine.createLine('chartMTMART', labels, [
             { label: t('avgResponseTime'), data: artValues, color: '#06b6d4' },
-        ]);
+        ], Utils.Duration.formatHMS);
 
         var priDatasets = CONFIG.PRIORITIES.map(function(p) {
             return {
@@ -2552,24 +2956,17 @@ var UIRenderer = {
             }).join('');
         }
 
-        var ahtValues = buckets.map(function(b) { return Utils.Math.round(b.kpi.aht, 1); });
+        var ahtValues = buckets.map(function(b) { return b.kpi.aht; });
         ChartEngine.createLine('chartMTMAHT', labels, [
             { label: t('aht'), data: ahtValues, color: '#8b5cf6' },
-        ]);
+        ], Utils.Duration.formatHMS);
 
         var slaValues = buckets.map(function(b) { return Utils.Math.round(b.kpi.slaRate, 1); });
         ChartEngine.createLine('chartMTMSLA', labels, [
             { label: t('sla'), data: slaValues, color: '#10b981' },
-        ]);
-
-        var tierData = DataProcessor.prepareMonthlyTierComparison(buckets);
-        ChartEngine.createStackedBar('chartMTMTierCompare', tierData.labels, tierData.datasets);
-        var legendTierCompare = document.getElementById('legendMTMTierCompare');
-        if (legendTierCompare) {
-            legendTierCompare.innerHTML = tierData.datasets.map(function(ds) {
-                return '<div class="legend-item"><div class="legend-dot" style="background:' + ds.color + '"></div>' + ds.label + '</div>';
-            }).join('');
-        }
+        ], function(val) {
+            return val + '%';
+        });
 
         var productData = DataProcessor.prepareMonthlyProductComparison(buckets);
         ChartEngine.createStackedBar('chartMTMProductCompare', productData.labels, productData.datasets);
@@ -2589,11 +2986,11 @@ var UIRenderer = {
             }).join('');
         }
 
-        var featureCompareData = DataProcessor.prepareMonthlyFeatureComparison(buckets);
-        ChartEngine.createStackedBar('chartMTMFeatureCompare', featureCompareData.labels, featureCompareData.datasets);
-        var legendFeatureCompare = document.getElementById('legendMTMFeatureCompare');
-        if (legendFeatureCompare) {
-            legendFeatureCompare.innerHTML = featureCompareData.datasets.map(function(ds) {
+        var taskStaffCompareData = DataProcessor.prepareMonthlyTaskStaffComparison(buckets);
+        ChartEngine.createStackedBar('chartMTMTaskStaffCompare', taskStaffCompareData.labels, taskStaffCompareData.datasets);
+        var legendTaskStaffCompare = document.getElementById('legendMTMTaskStaffCompare');
+        if (legendTaskStaffCompare) {
+            legendTaskStaffCompare.innerHTML = taskStaffCompareData.datasets.map(function(ds) {
                 return '<div class="legend-item"><div class="legend-dot" style="background:' + ds.color + '"></div>' + ds.label + '</div>';
             }).join('');
         }
@@ -2844,6 +3241,7 @@ var EventHandlers = {
 
         document.getElementById('btnRefresh')?.addEventListener('click', function() { self.onRefresh(); });
         document.getElementById('syncBadge')?.addEventListener('click', function() { self.onRefresh(); });
+        document.getElementById('btnFullscreen')?.addEventListener('click', function() { self.onToggleFullscreen(); });
 
         var searchInput = document.getElementById('taskSearchInput');
         if (searchInput) {
@@ -2863,6 +3261,14 @@ var EventHandlers = {
 
         var resetMTMBtn = document.getElementById('btnResetMTMFilters');
         if (resetMTMBtn) resetMTMBtn.addEventListener('click', function() { self.onResetMTMFilters(); });
+
+        document.getElementById('topClientModalClose')?.addEventListener('click', function() { UIRenderer._hideTopClientModal(); });
+        document.getElementById('topClientModalOverlay')?.addEventListener('click', function(e) {
+            if (e.target === this) UIRenderer._hideTopClientModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') UIRenderer._hideTopClientModal();
+        });
     },
 
     _validateDateRange: function() {
@@ -2958,6 +3364,7 @@ var EventHandlers = {
         }
         this.validateFilters();
         this._applyFilters();
+        appState.ui.topClientPage = 1;
         this.refreshUI();
     },
 
@@ -2988,6 +3395,7 @@ var EventHandlers = {
         this._validateDateRange();
         this.validateFilters();
         this._applyFilters();
+        appState.ui.topClientPage = 1;
         this.refreshUI();
     },
 
@@ -3016,6 +3424,8 @@ var EventHandlers = {
         if (menu === 'mtm') {
             UIRenderer.renderMTM();
         }
+
+        UIRenderer.scrollToTop();
     },
 
     onLanguageChange: function(lang) {
@@ -3063,13 +3473,16 @@ var EventHandlers = {
             chartTierTitle: 'tierTitle', chartTierSub: 'tierSub',
             chartProdTitle: 'prodTitle', chartProdSub: 'prodSub',
             chartStaffTitle: 'staffTitle', chartStaffSub: 'staffSub',
-            chartFeatTitle: 'featTitle', chartFeatSub: 'featSub',
             chartTrendTitle: 'trendTitle', chartTrendSub: 'trendSub',
+            chartTrend6MTitle: 'trend6MTitle', chartTrend6MSub: 'trend6MSub',
             chartShiftTitle: 'shiftTitle',
             lblTaskOverview: 'taskOverview',
             chartTaskStatusTitle: 'taskStatusTitle', chartTaskStatusSub: 'taskStatusSub',
             chartTaskStaffTitle: 'taskStaffTitle', chartTaskStaffSub: 'taskStaffSub',
             chartTaskTableTitle: 'taskTableTitle', chartTaskTableSub: 'taskTableSub',
+            chartTopClientTitle: 'topClientTitle', chartTopClientSub: 'topClientSub',
+            thTopClientName: 'topClientNameHeader',
+            thTopClientTotal: 'topClientTotalHeader',
             optTaskAllStaff: 'taskAllStaff',
             optTaskAllStatus: 'taskAllStatus',
             thTaskStaff: 'thStaff',
@@ -3077,10 +3490,9 @@ var EventHandlers = {
             lblMTMOverview: 'mtmOverview',
             lblMTMDateTo: 'to',
             lblMTMPeriod: 'period',
-            chartMTMTierTitle: 'mtmTierTitle', chartMTMTierSub: 'mtmTierSub',
             chartMTMProdTitle: 'mtmProdTitle', chartMTMProdSub: 'mtmProdSub',
             chartMTMStaffTitle: 'mtmStaffTitle', chartMTMStaffSub: 'mtmStaffSub',
-            chartMTMFeatTitle: 'mtmFeatTitle', chartMTMFeatSub: 'mtmFeatSub',
+            chartMTMTaskStaffTitle: 'mtmTaskStaffTitle', chartMTMTaskStaffSub: 'mtmTaskStaffSub',
             chartMTMShiftTitle: 'mtmShiftTitle',
             btnResetMTMFilters: 'reset',
             mtmEmptyText: 'mtmEmptyText',
@@ -3119,6 +3531,16 @@ var EventHandlers = {
         this._refreshData();
     },
 
+    onToggleFullscreen: function() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(function(err) {
+                console.warn('Fullscreen request failed:', err);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    },
+
     onTaskSearch: function() {
         var input = document.getElementById('taskSearchInput');
         appState.ui.taskSearch = input ? input.value.toLowerCase() : '';
@@ -3151,6 +3573,7 @@ var EventHandlers = {
         var filters = appState.filters;
         appState.filteredTickets = FilterEngine.applyTicketFilters(appState.tickets, filters);
         appState.filteredTasks = FilterEngine.applyTaskFilters(appState.tasks, filters);
+        appState.filteredResponseTimes = FilterEngine.applyResponseTimeFilters(appState.responseTimes, filters);
 
         var totalPages = Utils.Array.totalPages(appState.filteredTasks, CONFIG.PAGINATION.pageSize);
         if (appState.ui.taskPage > totalPages) appState.ui.taskPage = totalPages || 1;
@@ -3169,9 +3592,14 @@ var EventHandlers = {
                 UIRenderer.updateSyncStatus('error', null);
             }
 
+            appState.ui.taskPage = 1;
+            appState.ui.topClientPage = 1;
+
             self._applyFilters();
             self.refreshUI();
             if (appState.ui.currentMenu === 'mtm') UIRenderer.renderMTM();
+
+            UIRenderer.scrollToTop();
         });
     },
 
@@ -3185,12 +3613,19 @@ var EventHandlers = {
         var prevTicketData = DataProcessor.getPreviousPeriodData(appState.tickets, filters);
         var filterSummary = FilterEngine.getFilterSummary(filters);
 
-        UIRenderer.renderKPI(tickets, prevTicketData, filterSummary);
+        var prevRtRows = FilterEngine.getPreviousResponseTimeData(appState.responseTimes, filters);
+        var artCur = DataProcessor.calculateART(appState.filteredResponseTimes, filters.staff, appState.meta.responseTimeStaffCols);
+        var artPrev = DataProcessor.calculateART(prevRtRows, filters.staff, appState.meta.responseTimeStaffCols);
+
+        UIRenderer.renderKPI(tickets, prevTicketData, filterSummary, null, null, { cur: artCur, prev: artPrev });
         UIRenderer.renderEscalation(tickets);
         UIRenderer.renderCharts(tickets);
+        UIRenderer._renderTopClientTable(tickets);
         UIRenderer.renderTaskSection(appState.tasks, filters);
 
         this.validateFilters();
+
+        UIRenderer.scrollToTop();
     },
 
     _applyWeekDependency: function(monthSelect, weekSelect) {
@@ -3520,12 +3955,131 @@ var App = {
 };
 
 /* ================================================================
+   AUTO SCROLL
+   ================================================================ */
+
+var AutoScroll = {
+    active: false,
+    speed: 3,
+    direction: 'down',
+    rafId: null,
+    lastTime: null,
+    speedMap: { 1: 0.35, 2: 0.28, 3: 0.21, 4: 0.14, 5: 0.07 },
+    fastReturnSpeed: 1.4,
+
+    init: function() {
+        var self = this;
+
+        document.querySelectorAll('.as-speed-bar').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var level = parseInt(btn.dataset.speed, 10);
+                self.setSpeed(level);
+                self.start();
+            });
+        });
+
+        var playStopBtn = document.getElementById('autoScrollPlayStopBtn');
+        if (playStopBtn) playStopBtn.addEventListener('click', function() { self.toggle(); });
+
+        document.addEventListener('fullscreenchange', function() { self._onFullscreenChange(); });
+    },
+
+    _onFullscreenChange: function() {
+        var panel = document.getElementById('autoScrollPanel');
+        if (!panel) return;
+        var isFullscreen = !!document.fullscreenElement;
+        panel.classList.toggle('is-visible', isFullscreen);
+        if (!isFullscreen) this.stop();
+    },
+
+    setSpeed: function(level) {
+        this.speed = level;
+        document.querySelectorAll('.as-speed-bar').forEach(function(btn) {
+            btn.classList.toggle('active', parseInt(btn.dataset.speed, 10) === level);
+        });
+    },
+
+    toggle: function() {
+        if (this.active) {
+            this.stop();
+        } else {
+            this.start();
+        }
+    },
+
+    _updatePlayStopBtn: function() {
+        var btn = document.getElementById('autoScrollPlayStopBtn');
+        if (!btn) return;
+        if (this.active) {
+            btn.innerHTML = '&#9724;';
+            btn.classList.add('is-playing');
+            btn.title = 'Stop auto scroll';
+            btn.setAttribute('aria-label', 'Stop auto scroll');
+        } else {
+            btn.innerHTML = '&#9654;';
+            btn.classList.remove('is-playing');
+            btn.title = 'Play auto scroll';
+            btn.setAttribute('aria-label', 'Play auto scroll');
+        }
+    },
+
+    start: function() {
+        var self = this;
+        this.active = true;
+        this.direction = 'down';
+        this.lastTime = null;
+
+        this._updatePlayStopBtn();
+
+        if (this.rafId) cancelAnimationFrame(this.rafId);
+        this.rafId = requestAnimationFrame(function(ts) { self._tick(ts); });
+    },
+
+    stop: function() {
+        this.active = false;
+        if (this.rafId) cancelAnimationFrame(this.rafId);
+        this.rafId = null;
+        this.lastTime = null;
+
+        this._updatePlayStopBtn();
+    },
+
+    _tick: function(timestamp) {
+        if (!this.active) return;
+        var self = this;
+
+        if (!this.lastTime) this.lastTime = timestamp;
+        var delta = timestamp - this.lastTime;
+        this.lastTime = timestamp;
+
+        var maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+        if (this.direction === 'down') {
+            var pxPerMs = this.speedMap[this.speed] || 0.21;
+            window.scrollBy(0, pxPerMs * delta);
+            if (window.scrollY >= maxScroll - 2) {
+                this.direction = 'up-fast';
+            }
+        } else {
+            window.scrollBy(0, -(this.fastReturnSpeed * delta));
+            if (window.scrollY <= 2) {
+                window.scrollTo(0, 0);
+                this.direction = 'down';
+            }
+        }
+
+        this.rafId = requestAnimationFrame(function(ts) { self._tick(ts); });
+    },
+};
+
+/* ================================================================
    BOOT
    ================================================================ */
 
 document.addEventListener('DOMContentLoaded', function() {
     Auth.init();
     EventHandlers.applyStaticTranslations();
+    AutoScroll.init();
 
     if (Auth.isAuthenticated()) {
         Auth.hideLoginScreen();
